@@ -235,4 +235,4 @@ views.py ([view code](my_api/app_object_detection/views.py))
 [Mean Execution Time] Skema 2 :  0.08843120336532592
 ```
 
-![alt text](docs/pic11.jpg)
+![alt text](docs/pic12.jpg)
