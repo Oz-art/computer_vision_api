@@ -4,7 +4,6 @@ Example Object Detection API using SSD_Resnet
 
 #### Requirement
 + djangorestframework 
-+ tensorflow
 + opencv
 + numpy
 + pillow
@@ -16,7 +15,7 @@ Example Object Detection API using SSD_Resnet
 Download model SSD_Resnet pada link berikut https://bit.ly/3kjIPXv. lalu ekstrak ke direktori "simple_object_detection" dan ke direktori "my_api/app_object_detection"
 
 
-**Step 2, Call API
+**Step 2, Call API**
 
 Untuk pemanggilan API dapat menggunakan tools postman https://www.postman.com/, dengan spesifikasi request sebagai berikut
 
@@ -42,10 +41,13 @@ Content-type : multipart/form-data
 ##### Request Param,
 
 ```
-image : File, type=image/jpg
+input_image : File, type=image/jpg
 mode : integer, option= 1 or 2
 ```
 
+**Example Result**
+
+![alt text](docs/pic00.jpg)
 
 # Tahapan Develop Object Detection API
 
@@ -76,6 +78,7 @@ setelah command diatas dijalankan, akan terbentuk folder baru "my_api" dengan su
     │
     └── manage.py
     
+    
 **Step 3, Change Directory**
 
 pindahkan direktori ke my_api
@@ -83,6 +86,7 @@ pindahkan direktori ke my_api
 ```
 cd my_api
 ```
+    
     
 **Step 4, Create New Application**
 
@@ -115,11 +119,13 @@ setelah command diatas dijalankan, akan terbentuk folder baru "app_object_detect
     │   
     └── manage.py
     
+    
 **Step 5, Define Method object_detection_api**
 
 Source code Object Detection yang telah disusun sebelumnya, kita salin ke file "my_api/app_object_detection/views.py". Lalu kita edit menjadi seperti berikut
 
 views.py ([view code](docs/archieve_views_v1.py))
+
 
 **Step 6, Add csrf_exempt** 
 
@@ -139,6 +145,7 @@ lalu tambahkan end point yang diinginkan seperti contoh berikut ini,
 ![alt text](docs/pic03.jpg)
 
 urls.py ([view code](docs/archieve_views_v1.py))
+
 
 **Step 8, Add MEDIA URL**
 
@@ -171,6 +178,7 @@ tambahkan code berikut pada file "my_api/my_api/urls.py"
 
 urls.py ([view code](docs/archieve_urls_v2.py))
 
+
 **Step 9, Run API Server**
 
 gunakan command berikut untuk menjalankan server API dalam mode development
@@ -182,3 +190,49 @@ python manage.py runserver
 
 # Optimize Object Detection API
 
+**Step 1, Create Class object_detection**
+
+Ubah method object_detection_api kedalam bentuk class, seperti berikut. Lalu simpan di direktori "my_api/app_object_detection"
+
+object_detection.py ([view code](my_api/app_object_detection/object_detection.py))
+
+
+**Step 2, Implement Class Model**
+
+Hal yang menentukan perubahan kecepatan object detection API terdapat pada implementasi Class Model. Dengan ini, proses loading model dapar di cut, agar hanya dijalankan satu kali saja saat server API pertama kali dijalankan. Update file "my_api/app_object_detection/models.py", seperti berikut ini.
+
+models.py ([view code](my_api/app_object_detection/models.py))
+
+**Step 3, Update INSTALLED_APPS**
+
+Karena sekarang kita mengimplementasi Class Model. Maka app_object_detection perlu ditambahkan kedalam list INSTALLED_APPS, agar Class Model dapat diakses. Edit file "my_api/my_api/settings.py" seperti berikut.
+
+![alt text](docs/pic07.jpg)
+
+settings.py ([view code](my_api/my_api/settings.py))
+
+**Step 4, Update Views**
+
+Untuk simulasi, kita tambahkan opsi untuk dapat menggunakan dua skema deteksi. Skema pertama merupakan Object Detection API tanpa optimasi, dan skema 2 merupakan Object Detection API setelah di optimasi. Edit file "my_api/app_object_detection/views.py" menjadi seperti berikut,
+
+![alt text](docs/pic08.jpg)
+
+import Class Model Detector
+
+![alt text](docs/pic09.jpg)
+
+Add Method detect_object_v2
+
+![alt text](docs/pic10.jpg)
+
+views.py ([view code](my_api/app_object_detection/views.py))
+
+# Speed Comparison
+
+```
+[Mean Execution Time] Skema 1 :  0.1314366340637207
+
+[Mean Execution Time] Skema 2 :  0.08843120336532592
+```
+
+![alt text](docs/pic11.jpg)
