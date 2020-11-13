@@ -1,6 +1,6 @@
 # Computer Vision API
 
-Example Object Detection API using SSD_Resnet
+Example Object Detection API using SSD_Mobilenet
 
 #### Requirement
 + djangorestframework 
@@ -12,7 +12,7 @@ Example Object Detection API using SSD_Resnet
 
 **Step 1, Download Model**
 
-Download model SSD_Resnet pada link berikut https://bit.ly/3kjIPXv. lalu ekstrak ke direktori "simple_object_detection" dan ke direktori "my_api/app_object_detection"
+Download model SSD_Mobilenet pada link berikut https://bit.ly/3kjIPXv. lalu ekstrak ke direktori "simple_object_detection" dan ke direktori "my_api/app_object_detection"
 
 
 **Step 2, Call API**
